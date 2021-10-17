@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>maps features</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="bear-note-unique-identifier" content="AD0B9E52-9A90-4249-A870-E1825C322927-27133-0000938DE378DD56">
+        <meta name="created" content="2017-02-27T11:33:19-0700"/>
+        <meta name="modified" content="2018-07-26T09:14:30-0700"/>
+        <meta name="tags" content="department/development, department/development/codesnippets, department"/>
+        <meta name="last device" content="Alex’s MacBook Air"/>
+    </head>
+    <body>
+        <div class="note-wrapper">
+            <h1 id="maps features">maps features</h1>
+<p>maps notes:</p>
+<ul><li>Open Street is good for streets, cities, but not home addresses - Nominatim is better used for that (this seems to be slightly less accurate compared to Google’s reverse geocoding)
+</li><li>Use coords to get accurate street address through reverse geocoding (Google Maps, Open Street’s Nominatim like MapQuest)
+<ul><li>	Then
+<ul><li>		use a pattern to get addresses on that street while verifying them
+<ul><li>			either several in both directions (requires algorithm to detect block jumps in house numbering)
+</li><li>			or based on an address range ( <a href="https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2013/TGRSHP2013_TechDoc_Ch6.pdf">https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2013/TGRSHP2013_TechDoc_Ch6.pdf</a> ) (if this had coords then verification may be only necessary upon shipping?)
+</li></ul></li><li>		or use an api to reverse geocode an area
+</li></ul></li></ul></li><li>Or use coords to get the street name
+<ul><li>	Then
+<ul><li>		use an api to gather start and end address numbers (address range) (where? TIGER is okay)
+</li><li>		use an api to get street numbers on street (where?)
+</li></ul></li></ul></li><li>Use a service like <a href="http://here.com">here.com</a>
+<ul><li>	<a href="https://developer.here.com/rest-apis/documentation/geocoder/topics/examples-reverse-geocoding.html">https://developer.here.com/rest-apis/documentation/geocoder/topics/examples-reverse-geocoding.html</a>
+</li><li>	<a href="http://gis.stackexchange.com/questions/116437/how-to-get-lat-long-of-all-adresses-inside-a-polygon-in-google-map">http://gis.stackexchange.com/questions/116437/how-to-get-lat-long-of-all-adresses-inside-a-polygon-in-google-map</a>
+</li><li>	here turned out to be neat for proximity / radius, but returned very incomplete results
+</li></ul>
+</li></ul>
+<br>
+<p><a href="http://nominatim.openstreetmap.org/reverse?format=xml&amp;lat=42.9763865&amp;lon=-85.6623379&amp;zoom=18&amp;addressdetails=1">http://nominatim.openstreetmap.org/reverse?format=xml&lat=42.9763865&lon=-85.6623379&zoom=18&addressdetails=1</a></p>
+<p><a href="https://maps.googleapis.com/maps/api/geocode/json?latlng=42.9763865,-85.6623379&amp;key=AIzaSyCqFW9Pq_sJ8bNBx8f9gzS_1mHw7_H_5iI">https://maps.googleapis.com/maps/api/geocode/json?latlng=42.9763865,-85.6623379&key=AIzaSyCqFW9Pq_sJ8bNBx8f9gzS_1mHw7_H_5iI</a></p>
+<br>
+<p><a href="https://www.mapbox.com/api-documentation/#request-format">https://www.mapbox.com/api-documentation/#request-format</a></p>
+<p><a href="http://results.openaddresses.io/">http://results.openaddresses.io/</a> incomplete for MI</p>
+<p><a href="http://www.whitepages.com/neighbors/f1fe043c-736e-4cb5-8b05-799618ab1b8e">http://www.whitepages.com/neighbors/f1fe043c-736e-4cb5-8b05-799618ab1b8e</a> not available via API, crawl?</p>
+<br>
+<p>the plan:</p>
+<ul><li>Use current location to find nearest street address
+<ul><li>	if an exact address like 733 cannot be found - how to get address range? TIGER off the bat?
+</li></ul></li><li>Then “guess” and verify 10 address back and 10 address forward (the range)
+<ul><li>	May cost upwards of 40, 100 requests
+</li><li>	Intelligently detect block jumps (780 to 801)? (space is not always a block jump)
+</li><li>	Is “guess”ing with coords less requests than each number possibility?
+</li></ul></li><li>Limit # of verification requests by
+<ul><li>	doing requests at regular interval
+</li><li>	and when moving / driving at slow speed
+</li><li>	and when no longer in range that’s already verified
+</li><li>	<b>bulk verification?</b>
+</li><li>	don’t display dots until clicking on home? (color codes work thereafter)
+</li></ul></li><li>Later: integrate TIGER database which is said to include address ranges
+<ul><li>	this will improve the “guess”
+</li><li>	also helps detect block-jumps
+</li></ul></li><li>Later: build caching mechanism to store verified data on our server
+</li><li>Later: find and consider an address database
+</li></ul>
+<br>
+<p>Nope, forget the grey dots.</p>
+<br>
+<p><span class='hashtag'>#department/development/codesnippets</span></p>
+        </div>
+        <script type="text/javascript">
+            (function() {
+
+    var doc_ols = document.getElementsByTagName("ol");
+
+    for ( i=0; i<doc_ols.length; i++) {
+
+        var ol_start = doc_ols[i].getAttribute("start") - 1;
+        doc_ols[i].setAttribute("style", "counter-reset:ol_counter " + ol_start + ";");
+
+    }
+
+})();
+
+        </script>
+        <style>
+            html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font:inherit;font-size:100%;vertical-align:baseline}html{line-height:1}ol,ul{list-style:none}table{border-collapse:collapse;border-spacing:0}caption,th,td{text-align:left;font-weight:normal;vertical-align:middle}q,blockquote{quotes:none}q:before,q:after,blockquote:before,blockquote:after{content:"";content:none}a img{border:none}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}*{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}html{font-size:87.5%;line-height:1.57143em}html{font-size:14px;line-height:1.6em;-webkit-text-size-adjust:100%}body{background:#fcfcfc;color:#545454;text-rendering:optimizeLegibility;font-family:"AvenirNext-Regular"}a{color:#de4c4f;text-decoration:none}h1{font-family:"AvenirNext-Medium";color:#333;font-size:1.6em;line-height:1.3em;margin-bottom:.78571em}h2{font-family:"AvenirNext-Medium";color:#333;font-size:1.3em;line-height:1em;margin-bottom:.62857em}h3{font-family:"AvenirNext-Medium";color:#333;font-size:1.15em;line-height:1em;margin-bottom:.47143em}p{margin-bottom:1.57143em;hyphens:auto}hr{height:1px;border:0;background-color:#dedede;margin:-1px auto 1.57143em auto}ul,ol{margin-bottom:.31429em}ul ul,ul ol,ol ul,ol ol{margin-bottom:0px}ol{counter-reset:ol_counter}ol li:before{content:counter(ol_counter) ".";counter-increment:ol_counter;color:#e06e73;text-align:right;display:inline-block;min-width:1em;margin-right:0.5em}b,strong{font-family:"AvenirNext-Bold"}i,em{font-family:"AvenirNext-Italic"}code{font-family:"Menlo-Regular"}.text-overflow-ellipsis{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sf_code_string,.sf_code_selector,.sf_code_attr-name,.sf_code_char,.sf_code_builtin,.sf_code_inserted{color:#D33905}.sf_code_comment,.sf_code_prolog,.sf_code_doctype,.sf_code_cdata{color:#838383}.sf_code_number,.sf_code_boolean{color:#0E73A2}.sf_code_keyword,.sf_code_atrule,.sf_code_rule,.sf_code_attr-value,.sf_code_function,.sf_code_class-name,.sf_code_class,.sf_code_regex,.sf_code_important,.sf_code_variable,.sf_code_interpolation{color:#0E73A2}.sf_code_property,.sf_code_tag,.sf_code_constant,.sf_code_symbol,.sf_code_deleted{color:#1B00CE}.sf_code_macro,.sf_code_entity,.sf_code_operator,.sf_code_url{color:#920448}.note-wrapper{max-width:46em;margin:0px auto;padding:1.57143em 3.14286em}.note-wrapper.spotlight-preview{overflow-x:hidden}u{text-decoration:none;background-image:linear-gradient(to bottom, rgba(0,0,0,0) 50%,#e06e73 50%);background-repeat:repeat-x;background-size:2px 2px;background-position:0 1.05em}s{color:#878787}p{margin-bottom:0.1em}hr{margin-bottom:0.7em;margin-top:0.7em}ul li{text-indent:-0.35em}ul li:before{content:"•";color:#e06e73;display:inline-block;margin-right:0.3em}ul ul{margin-left:1.25714em}ol li{text-indent:-1.45em}ol ol{margin-left:1.25714em}blockquote{display:block;margin-left:-1em;padding-left:0.8em;border-left:0.2em solid #e06e73}.todo-list ul{margin-left:1.88571em}.todo-list li{text-indent:-1.75em}.todo-list li:before{content:"";display:static;margin-right:0px}.todo-checkbox{text-indent:-1.7em}.todo-checkbox svg{margin-right:0.3em;position:relative;top:0.2em}.todo-checkbox svg #check{display:none}.todo-checkbox.todo-checked #check{display:inline}.todo-checkbox.todo-checked+.todo-text{text-decoration:line-through;color:#878787}.code-inline{display:inline;background:white;border:solid 1px #dedede;padding:0.2em 0.5em;font-size:0.9em}.code-multiline{display:block;background:white;border:solid 1px #dedede;padding:0.7em 1em;font-size:0.9em;overflow-x:auto}.hashtag{display:inline-block;color:white;background:#b8bfc2;padding:0.0em 0.5em;border-radius:1em;text-indent:0}.hashtag a{color:#fff}.address a{color:#545454;background-image:linear-gradient(to bottom, rgba(0,0,0,0) 50%,#0da35e 50%);background-repeat:repeat-x;background-size:2px 2px;background-position:0 1.05em}.address svg{position:relative;top:0.2em;display:inline-block;margin-right:0.2em}.color-preview{display:inline-block;width:1em;height:1em;border:solid 1px rgba(0,0,0,0.3);border-radius:50%;margin-right:0.1em;position:relative;top:0.2em;white-space:nowrap}.color-code{margin-right:0.2em;font-family:"Menlo-Regular";font-size:0.9em}.color-hash{opacity:0.4}.ordered-list-number{color:#e06e73;text-align:right;display:inline-block;min-width:1em}.arrow svg{position:relative;top:0.08em;display:inline-block;margin-right:0.15em;margin-left:0.15em}.arrow svg #rod{stroke:#545454}.arrow svg #point{fill:#545454}mark{color:inherit;display:inline;padding:0.2em 0.5em;background-color:#fcffc0}img{max-width:100%;height:auto}
+
+        </style>
+    </body>
+</html>

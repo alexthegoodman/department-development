@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SVG clip path mask</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="bear-note-unique-identifier" content="BE1017ED-1DD7-42B7-99BE-A2458629C6CF-2788-0000220720E4DB5A">
+        <meta name="created" content="2018-08-18T16:51:50-0700"/>
+        <meta name="modified" content="2018-09-01T17:17:59-0700"/>
+        <meta name="tags" content="department/development, department/development/codesnippets, department"/>
+        <meta name="last device" content="Alex’s MacBook Air"/>
+    </head>
+    <body>
+        <div class="note-wrapper">
+            <h1 id="SVG clip path mask">SVG clip path mask</h1>
+<br>
+<p><b>Animated animating icons</b></p>
+<p>Web:</p>
+<ul><li><a href="https://github.com/airbnb/lottie-web">GitHub - airbnb/lottie-web: Render After Effects animations natively on Web, Android and iOS, and React Native. http://airbnb.io/lottie/</a>
+</li><li><a href="https://theblog.adobe.com/export-svg-animations-for-the-web-with-snap-svg/">https://theblog.adobe.com/export-svg-animations-for-the-web-with-snap-svg/</a>
+</li><li><s>After Effects is good for animation, but Animate CC is intended for the Web, is Vector Based, and exports to Snap.svg seem more lightweight</s>
+<ul><li>	On the other hand, I’d like to use the same tool for web and mobile
+</li><li>	After Effects is actually great for vectors: <a href="https://www.youtube.com/watch?v=e_W-LlGrREg">https://www.youtube.com/watch?v=e_W-LlGrREg</a> and Illustrator <span class='arrow'><svg width="11px" height="10px" viewBox="0 0 11 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >    <g id="right-arrow" >        <path d="M1.77635684e-14,5 L9,5" id="rod" stroke="#000000" stroke-width="2" ></path>        <path d="M11,5 L6,0.5 L6,9.5 L11,5 Z" id="point" fill="#000000"></path>    </g></svg></span> After Effects workflow, and Bodymovin / Lottie should animated the SVG without being heavy
+</li><li>	Animate CC is okay, but the UI is a pain to navigate and it has fewer nifty tools, plus Snap.SVG must be installed ahead of time
+</li></ul></li><li>After Effects
+<ul><li>	Open in Ilustrator
+</li><li>	Make sure SVG layers are all separate
+<ul><li>		Click Group and “Release to Layers”
+</li></ul></li><li>	<a href="https://www.youtube.com/watch?v=e_W-LlGrREg">How to Animate an Icon in After Effects - YouTube</a>
+</li><li>	<a href="https://www.youtube.com/watch?v=XLPchE7DPQE">https://www.youtube.com/watch?v=XLPchE7DPQE</a>
+</li><li>	Import into After Effects, do some conversions in the video
+<ul><li>		Save AS PDF Compatible, Import as Composition - retain layers
+</li><li>		<a href="http://airbnb.io/lottie/web/getting-started.html">Getting started · Lottie</a>
+</li><li>		<a href="https://github.com/airbnb/lottie-web">https://github.com/airbnb/lottie-web</a>
+</li><li>		
+</li></ul></li><li>	etc
+</li></ul>
+</li></ul>
+<br>
+<p><b>Creating Clip Path</b></p>
+<p>Creating SVGs in Sketch is good. Not best for creating the clip-path SVG element needed.</p>
+<br>
+<p>Use Illustrator for clip-path SVGs. Create it in Illustrator from scratch. Use object <span class='arrow'><svg width="11px" height="10px" viewBox="0 0 11 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >    <g id="right-arrow" >        <path d="M1.77635684e-14,5 L9,5" id="rod" stroke="#000000" stroke-width="2" ></path>        <path d="M11,5 L6,0.5 L6,9.5 L11,5 Z" id="point" fill="#000000"></path>    </g></svg></span> clipping mask <span class='arrow'><svg width="11px" height="10px" viewBox="0 0 11 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >    <g id="right-arrow" >        <path d="M1.77635684e-14,5 L9,5" id="rod" stroke="#000000" stroke-width="2" ></path>        <path d="M11,5 L6,0.5 L6,9.5 L11,5 Z" id="point" fill="#000000"></path>    </g></svg></span> make to transform a group of layers into the mask.</p>
+<br>
+<p>Use a rectangle, then curve the top. Yay!</p>
+<br>
+<p>Pull the <clippath> chunk out into a simpler SVG like:</p>
+<br>
+<p><b>Convert:</b></p>
+<p><svg id="Layer_1" data-name="Layer 1" xmlns="<a href="http://www.w3.org/2000/svg">http://www.w3.org/2000/svg</a>" xmlns:xlink="<a href="http://www.w3.org/1999/xlink">http://www.w3.org/1999/xlink</a>" viewBox="0 0 501 106"></p>
+<p>  <defs></p>
+<p>    <style></p>
+<p>      .cls-1 {</p>
+<p>        fill: none;</p>
+<p>      }</p>
+<br>
+<p>      .cls-2 {</p>
+<p>        clip-path: url(clip-path);</p>
+<p>      }</p>
+<br>
+<p>      .cls-3 {</p>
+<p>        fill: fff;</p>
+<p>        stroke: #000;</p>
+<p>        stroke-miterlimit: 10;</p>
+<p>      }</p>
+<p>    </style></p>
+<p>    <clipPath id="clip-path" transform="translate(0.5 0.5)"></p>
+<p>      <path class="cls-1" d="M0,105C46.6,15,500,0,500,0H0Z"/></p>
+<p>    </clipPath></p>
+<p>  </defs></p>
+<p>  <title>footerCurve</title></p>
+<p>  <g class="cls-2"></p>
+<p>    <rect class="cls-3" x="0.5" y="0.5" width="500" height="105"/></p>
+<p>  </g></p>
+<p>  <path class="cls-3" d="M-28.33,205.67" transform="translate(0.5 0.5)"/></p>
+<p></svg></p>
+<br>
+<p><b>TO:</b></p>
+<p><svg height="0" style="position: absolute;"></p>
+<p>  <defs></p>
+<p>    <clipPath id="footerCurve" transform="translate(0.5 0.5)"></p>
+<p>      <path class="cls-1" d="M0,105C46.6,15,500,0,500,0H0Z" /></p>
+<p>    </clipPath></p>
+<p>  </defs></p>
+<p></svg></p>
+<br>
+<p><span class='hashtag'>#department/development/codesnippets</span></p>
+        </div>
+        <script type="text/javascript">
+            (function() {
+
+    var doc_ols = document.getElementsByTagName("ol");
+
+    for ( i=0; i<doc_ols.length; i++) {
+
+        var ol_start = doc_ols[i].getAttribute("start") - 1;
+        doc_ols[i].setAttribute("style", "counter-reset:ol_counter " + ol_start + ";");
+
+    }
+
+})();
+
+        </script>
+        <style>
+            html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font:inherit;font-size:100%;vertical-align:baseline}html{line-height:1}ol,ul{list-style:none}table{border-collapse:collapse;border-spacing:0}caption,th,td{text-align:left;font-weight:normal;vertical-align:middle}q,blockquote{quotes:none}q:before,q:after,blockquote:before,blockquote:after{content:"";content:none}a img{border:none}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}*{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}html{font-size:87.5%;line-height:1.57143em}html{font-size:14px;line-height:1.6em;-webkit-text-size-adjust:100%}body{background:#fcfcfc;color:#545454;text-rendering:optimizeLegibility;font-family:"AvenirNext-Regular"}a{color:#de4c4f;text-decoration:none}h1{font-family:"AvenirNext-Medium";color:#333;font-size:1.6em;line-height:1.3em;margin-bottom:.78571em}h2{font-family:"AvenirNext-Medium";color:#333;font-size:1.3em;line-height:1em;margin-bottom:.62857em}h3{font-family:"AvenirNext-Medium";color:#333;font-size:1.15em;line-height:1em;margin-bottom:.47143em}p{margin-bottom:1.57143em;hyphens:auto}hr{height:1px;border:0;background-color:#dedede;margin:-1px auto 1.57143em auto}ul,ol{margin-bottom:.31429em}ul ul,ul ol,ol ul,ol ol{margin-bottom:0px}ol{counter-reset:ol_counter}ol li:before{content:counter(ol_counter) ".";counter-increment:ol_counter;color:#e06e73;text-align:right;display:inline-block;min-width:1em;margin-right:0.5em}b,strong{font-family:"AvenirNext-Bold"}i,em{font-family:"AvenirNext-Italic"}code{font-family:"Menlo-Regular"}.text-overflow-ellipsis{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sf_code_string,.sf_code_selector,.sf_code_attr-name,.sf_code_char,.sf_code_builtin,.sf_code_inserted{color:#D33905}.sf_code_comment,.sf_code_prolog,.sf_code_doctype,.sf_code_cdata{color:#838383}.sf_code_number,.sf_code_boolean{color:#0E73A2}.sf_code_keyword,.sf_code_atrule,.sf_code_rule,.sf_code_attr-value,.sf_code_function,.sf_code_class-name,.sf_code_class,.sf_code_regex,.sf_code_important,.sf_code_variable,.sf_code_interpolation{color:#0E73A2}.sf_code_property,.sf_code_tag,.sf_code_constant,.sf_code_symbol,.sf_code_deleted{color:#1B00CE}.sf_code_macro,.sf_code_entity,.sf_code_operator,.sf_code_url{color:#920448}.note-wrapper{max-width:46em;margin:0px auto;padding:1.57143em 3.14286em}.note-wrapper.spotlight-preview{overflow-x:hidden}u{text-decoration:none;background-image:linear-gradient(to bottom, rgba(0,0,0,0) 50%,#e06e73 50%);background-repeat:repeat-x;background-size:2px 2px;background-position:0 1.05em}s{color:#878787}p{margin-bottom:0.1em}hr{margin-bottom:0.7em;margin-top:0.7em}ul li{text-indent:-0.35em}ul li:before{content:"•";color:#e06e73;display:inline-block;margin-right:0.3em}ul ul{margin-left:1.25714em}ol li{text-indent:-1.45em}ol ol{margin-left:1.25714em}blockquote{display:block;margin-left:-1em;padding-left:0.8em;border-left:0.2em solid #e06e73}.todo-list ul{margin-left:1.88571em}.todo-list li{text-indent:-1.75em}.todo-list li:before{content:"";display:static;margin-right:0px}.todo-checkbox{text-indent:-1.7em}.todo-checkbox svg{margin-right:0.3em;position:relative;top:0.2em}.todo-checkbox svg #check{display:none}.todo-checkbox.todo-checked #check{display:inline}.todo-checkbox.todo-checked+.todo-text{text-decoration:line-through;color:#878787}.code-inline{display:inline;background:white;border:solid 1px #dedede;padding:0.2em 0.5em;font-size:0.9em}.code-multiline{display:block;background:white;border:solid 1px #dedede;padding:0.7em 1em;font-size:0.9em;overflow-x:auto}.hashtag{display:inline-block;color:white;background:#b8bfc2;padding:0.0em 0.5em;border-radius:1em;text-indent:0}.hashtag a{color:#fff}.address a{color:#545454;background-image:linear-gradient(to bottom, rgba(0,0,0,0) 50%,#0da35e 50%);background-repeat:repeat-x;background-size:2px 2px;background-position:0 1.05em}.address svg{position:relative;top:0.2em;display:inline-block;margin-right:0.2em}.color-preview{display:inline-block;width:1em;height:1em;border:solid 1px rgba(0,0,0,0.3);border-radius:50%;margin-right:0.1em;position:relative;top:0.2em;white-space:nowrap}.color-code{margin-right:0.2em;font-family:"Menlo-Regular";font-size:0.9em}.color-hash{opacity:0.4}.ordered-list-number{color:#e06e73;text-align:right;display:inline-block;min-width:1em}.arrow svg{position:relative;top:0.08em;display:inline-block;margin-right:0.15em;margin-left:0.15em}.arrow svg #rod{stroke:#545454}.arrow svg #point{fill:#545454}mark{color:inherit;display:inline;padding:0.2em 0.5em;background-color:#fcffc0}img{max-width:100%;height:auto}
+
+        </style>
+    </body>
+</html>
